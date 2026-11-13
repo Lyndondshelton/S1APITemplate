@@ -5,3 +5,16 @@ obj/
 /.vs/
 .vs/
 local.build.props
+
+# Local game assemblies used only as compile references; never distribute.
+/.local-references/
+
+# Agents
+/.agents/
+## Agent instructions
+AGENTS.md
+
+## Agent Logs
+./agent-logs/
+*agent.log
+

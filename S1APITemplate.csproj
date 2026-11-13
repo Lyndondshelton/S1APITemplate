@@ -14,6 +14,8 @@
     <Platforms>AnyCPU</Platforms>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <!-- Keep local game references out of SDK items, publishing, and NuGet packages. -->
+    <DefaultItemExcludes>$(DefaultItemExcludes);.local-references/**</DefaultItemExcludes>
     <AutomateLocalDeployment Condition="'$(AutomateLocalDeployment)' == ''">false</AutomateLocalDeployment>
     <UseLocalS1APIForked Condition="'$(UseLocalS1APIForked)' == ''">false</UseLocalS1APIForked>
     <UseLocalMelonLoaderReferences Condition="'$(UseLocalMelonLoaderReferences)' == ''">false</UseLocalMelonLoaderReferences>
@@ -30,6 +32,12 @@
     <MelonLoaderMonoAssembliesPath Condition="'$(MelonLoaderMonoAssembliesPath)' == '' and '$(LocalMonoDeploymentPath)' != ''">$(LocalMonoDeploymentPath)\MelonLoader\net35</MelonLoaderMonoAssembliesPath>
     <MelonLoaderAssembliesPath Condition="'$(MelonLoaderAssembliesPath)' == '' and '$(LocalIl2CppDeploymentPath)' != ''">$(LocalIl2CppDeploymentPath)\MelonLoader\net6</MelonLoaderAssembliesPath>
   </PropertyGroup>
+
+  <!-- Standalone finance checks are a separate executable, never mod source or content. -->
+  <ItemGroup>
+    <Compile Remove="Tests/**" />
+    <None Remove="Tests/**" />
+  </ItemGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'CrossCompat'">
     <DefineConstants>$(DefineConstants);CROSS_COMPAT;MONO</DefineConstants>
@@ -168,6 +176,11 @@
   </ItemGroup>
 
   <ItemGroup Label="Il2CppGameReferences" Condition="'$(Configuration)' == 'Il2cpp' and '$(Il2CppAssembliesPath)' != ''">
+    <!-- Generated Unity wrappers expose base types from the IL2CPP core library. -->
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>$(Il2CppAssembliesPath)\Il2Cppmscorlib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(Il2CppAssembliesPath)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>

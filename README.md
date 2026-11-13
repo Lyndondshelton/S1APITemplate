@@ -1,4 +1,128 @@
-# S1APITemplate
+# Net Worth GUI
+
+Displays the game's `S1API.Money.Money.GetNetWorth()` result in a translucent,
+non-interactive panel anchored 20 reference pixels from the top-left corner.
+The mod reads the game value; it does not change money or add asset values.
+The expanded panel also shows revenue, expenses, and profit since the save loaded.
+
+## Session accounting
+
+### Finance diagnostics
+
+The `FinanceDiagnostics` MelonLoader preference defaults to `true`. Logs appear in
+the MelonLoader console and the game's `MelonLoader/Latest.log`, tagged with a
+session number and event sequence. Set the preference to `false` to disable them.
+This is separate from the older `DebugLogs` preference.
+
+- `CASH`/`BANK`: requested amount, actual before/after balances, delta, and transfer
+  exclusion. Bank entries include the transaction name and quantity.
+- `STORAGE_PAYMENT`: actual cash consumed for wages/supplier payments.
+- `TOTALS`: revenue, expenses, and profit after the transaction.
+- `SNAPSHOT`: the first HUD sample and changed samples only, with game net worth,
+  cash, bank, net-worth delta, and session totals. `otherReportedValue` is simply
+  net worth minus cash minus bank; it is a diagnostic remainder, not a measured
+  inventory/property valuation. A change here can distinguish game asset
+  revaluation from a cash receipt.
+- Session start/stop markers document resets. Managed game callers are included
+  where available; IL2CPP may not expose native callers in managed stack traces.
+
+Logging uses the same net-worth result as the HUD and never calls the game's
+net-worth calculation a second time. To investigate a sale, retain the surrounding
+`CASH`, `BANK`, `TOTALS`, and `SNAPSHOT` lines from `Latest.log`.
+
+- Revenue accumulates actual cash receipts and non-transfer bank credits.
+  Inspected cash paths include customer sales, dealer collections, recycling,
+  pawn-shop payouts, and cash pickups. Bank expenses include purchases and deliveries.
+- Expenses accumulate actual cash/bank payments and cash consumed from employee
+  homes or supplier stashes. Moving cash into storage is not itself an expense.
+- Profit is revenue minus expenses: session cash flow, with purchases expensed when
+  paid. It is not inventory-cost accounting or the change in total asset value.
+- ATM deposits/withdrawals and laundering principal are excluded. Cash suppression
+  covers each ATM coroutine step and laundering confirmation; bank transfer labels
+  are filtered at the received balance mutation, including delayed receipts.
+- A new save load resets all session totals. Loading existing money does not count.
+  Bank receipts arriving after the session starts belong to that session, except
+  known transfers. The totals are not saved to disk.
+
+`Finance/SessionFinanceTracker.cs` owns accounting; `Finance/TransactionHooks.cs`
+resolves game methods by runtime name and installs Harmony prefix/postfix hooks.
+It hooks the received bank transaction logic once, avoiding counting both the
+request and receipt. Transfer context is restored by finalizers even on exceptions.
+No game types appear in the shared mod's compile-time transaction signatures.
+If a required hook cannot be installed, session rows show `Unavailable` and the
+MelonLoader log explains the failure; the mod does not substitute balance estimates.
+
+Coverage is based on locally inspected Mono methods and IL2CPP wrapper signatures.
+Custom mods that bypass these methods are not automatically covered. Cash pickups
+are treated as receipts; the game path does not identify whether a pickup was
+previously owned. Multiplayer combines local cash events with observed shared bank
+events; storage payments are observed on the process executing them. Do not treat
+this as a synchronized team ledger. Runtime testing on both backends remains required.
+
+Run the standalone accounting checks with a .NET 9 SDK:
+
+```powershell
+dotnet run --project Tests/SessionFinanceChecks
+```
+
+To reproduce IL2CPP host formatting restrictions, run:
+
+```powershell
+dotnet run --project Tests/SessionFinanceChecks -p:InvariantGlobalization=true -- --invariant
+```
+
+HUD formatting uses invariant culture, so it does not require `en-US` culture data.
+Game type lookup requests exact names from loaded assemblies instead of enumerating
+unrelated Unity types, avoiding the type-loading warnings seen during broad searches.
+
+In-game validation: load a save (session totals zero), earn money from a sale and
+recycling, spend cash, make an online purchase, deposit/withdraw at an ATM, move
+cash to/from storage, collect dealer proceeds, pay wages, launder cash, and reload.
+Transfers must leave revenue/expenses unchanged; profit must equal their difference.
+
+## HUD architecture
+
+- `UI/NetWorthHud.cs` owns a screen-space canvas, panel, and formatted dollar rows.
+  Its `Show`, `SetValue`, and `Dispose` methods contain presentation logic only.
+- `Core.cs` creates the HUD on `GameLifecycle.OnLoadComplete`, supplies the initial
+  value, and refreshes it once per second from `OnUpdate` using unscaled time.
+  It removes the HUD before scene changes, new loads, and application exit.
+- `Utils/Constants.cs` owns mod metadata and the refresh interval.
+
+The display has no input handlers and does not capture mouse clicks. Values are
+reconstructed from each loaded save; the mod does not persist additional data.
+HUD failures are reported to MelonLoader and disable the current HUD to avoid
+repeating the error every frame.
+
+## Building this installation
+
+Use `CrossCompat` for the intended shared Mono/IL2CPP release DLL. The local
+`MonoAssembliesPath` in the ignored `local.build.props` points at a preserved copy
+of the alternate branch's `Schedule I_Data/Managed` folder under
+`.local-references/Mono/Managed`. This lets compilation continue when Steam is
+switched back to IL2CPP. S1API comes from the existing NuGet reference for this
+configuration. A fresh checkout must supply its own managed reference files.
+
+```powershell
+dotnet build .\S1APITemplate.sln -c CrossCompat -p:AutomateLocalDeployment=false
+```
+
+Use a recent .NET SDK (this machine also has one at
+`$env:USERPROFILE\.dotnet\dotnet.exe`). With the game closed, copy
+`bin/CrossCompat/netstandard2.1/S1APITemplate.dll` into the game's `Mods` folder.
+Remove any previous `S1APITemplate_Il2cpp.dll` from `Mods` when switching to this build,
+so MelonLoader does not load both versions. Launch the game normally, load a save,
+and check the panel, a money change, and returning to the menu/reloading a save.
+
+Both runtimes are intended targets; a successful compilation does not establish
+in-game compatibility. Test this DLL on both Mono and IL2CPP before release.
+Players need MelonLoader and their runtime's S1API installation, not your local
+reference folder. References have `Private=false`; the local folder is excluded
+from Git, SDK items, and template generation. Keep game assemblies and generated
+wrappers out of commits and release archives. Refresh the local copy when game
+updates require newer references.
+
+## Original template reference
 
 A beginner-friendly Schedule I mod template for [S1API.Forked](https://www.nuget.org/packages/S1API.Forked), MelonLoader, and Harmony. The project currently pins S1API.Forked 3.1.4.
 
