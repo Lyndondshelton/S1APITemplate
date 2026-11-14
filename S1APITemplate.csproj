@@ -7,10 +7,17 @@
     <TargetFramework Condition="'$(Configuration)' == 'Il2cpp'">net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Update the RootNamespace to be the name of the mod you're creating -->
     <RootNamespace>S1API_CalculatorPhoneApp</RootNamespace>
+    <!-- Set the mod version here. GenerateBuildInfo also exposes it to Constants.ModVersion. -->
     <Version>0.1.0</Version>
     <VersionDescription>Prerelease implementation for dev use only.</VersionDescription>
+    
+    <!-- Don't Change! This will be the name of the .dll file that is 
+      created in /bin/<Configuration>/<Framework>/ when the project is built-->
     <AssemblyName>$(RootNamespace)_v$(Version)</AssemblyName>
+    <!---->
+    
     <LangVersion>latest</LangVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Configurations>CrossCompat;Mono;Il2cpp</Configurations>
@@ -36,16 +43,17 @@
 
   <PropertyGroup Condition="'$(Configuration)' == 'CrossCompat'">
     <DefineConstants>$(DefineConstants);CROSS_COMPAT;MONO</DefineConstants>
+    <AssemblyName>S1APITemplate</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Mono'">
     <DefineConstants>$(DefineConstants);MONO</DefineConstants>
-    <AssemblyName>$(AssemblyName)_Mono</AssemblyName>
+    <AssemblyName>S1APITemplate_Mono</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Il2cpp'">
     <DefineConstants>$(DefineConstants);IL2CPP</DefineConstants>
-    <AssemblyName>$(AssemblyName)_Il2cpp</AssemblyName>
+    <AssemblyName>S1APITemplate_Il2cpp</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(UseLocalS1APIForked)' != 'true'">

@@ -7,10 +7,11 @@ namespace S1API_CalculatorPhoneApp.Utils
 {
     public static class Constants
     {
-        public const string ModName = "S1API_CalculatorPhoneApp";
-        public const string ModVersion = "0.1.0";
+        public const string ModName = BuildInfo.ModName;
+        // Generated from <Version> in the project file during each build.
+        public const string ModVersion = BuildInfo.Version;
         public const string ModAuthor = "Lyndon Shelton";
-        public const string ModDescription = "Adds a calculator app to the in game phone.";
+        public const string ModDescription = "Adds a calculator app to the in-game phone.";
 
         public const string PreferencesCategory = ModName;
 
