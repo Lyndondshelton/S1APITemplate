@@ -1,11 +1,18 @@
 using MelonLoader;
 using S1API.Lifecycle;
-using S1APITemplate.Utils;
+using S1API_CalculatorPhoneApp.Utils;
 
-[assembly: MelonInfo(typeof(S1APITemplate.Core), Constants.ModName, Constants.ModVersion, Constants.ModAuthor)]
+// Once you update the Core.cs namespace, you will have to update the typeof definition here. 
+[assembly: MelonInfo(typeof(S1API_CalculatorPhoneApp.Core), Constants.ModName, Constants.ModVersion, Constants.ModAuthor)]
 [assembly: MelonGame(Constants.Game.Studio, Constants.Game.Name)]
 
-namespace S1APITemplate
+/*
+ * ----------------------------------------------------
+ * Update the namespace to match what is defined in the
+ * S1APITemplate.csproj file.
+ * ----------------------------------------------------
+ */
+namespace S1API_CalculatorPhoneApp
 {
     public sealed class Core : MelonMod
     {

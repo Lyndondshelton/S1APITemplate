@@ -1,4 +1,5 @@
-# S1APITemplate
+# S1API_CalculatorPhoneApp
+_TODO: Update this README_
 
 A beginner-friendly Schedule I mod template for [S1API.Forked](https://www.nuget.org/packages/S1API.Forked), MelonLoader, and Harmony. The project currently pins S1API.Forked 3.1.4.
 

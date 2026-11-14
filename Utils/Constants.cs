@@ -1,11 +1,16 @@
-namespace S1APITemplate.Utils
+/*---------------------------------------------------------
+ * Update the namespace to match what is defined in Core.cs.
+ * The ModName should also match the namespace.
+ * --------------------------------------------------------
+ */
+namespace S1API_CalculatorPhoneApp.Utils
 {
     public static class Constants
     {
-        public const string ModName = "S1APITemplate";
-        public const string ModVersion = "1.0.0";
-        public const string ModAuthor = "YourName";
-        public const string ModDescription = "Mod description.";
+        public const string ModName = "S1API_CalculatorPhoneApp";
+        public const string ModVersion = "0.1.0";
+        public const string ModAuthor = "Lyndon Shelton";
+        public const string ModDescription = "Adds a calculator app to the in game phone.";
 
         public const string PreferencesCategory = ModName;
 
