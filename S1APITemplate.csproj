@@ -33,7 +33,7 @@
     <MelonLoaderAssembliesPath Condition="'$(MelonLoaderAssembliesPath)' == '' and '$(LocalIl2CppDeploymentPath)' != ''">$(LocalIl2CppDeploymentPath)\MelonLoader\net6</MelonLoaderAssembliesPath>
   </PropertyGroup>
 
-  <!-- Standalone finance checks are a separate executable, never mod source or content. -->
+  <!-- Standalone earnings checks are a separate executable, never mod source or content. -->
   <ItemGroup>
     <Compile Remove="Tests/**" />
     <None Remove="Tests/**" />

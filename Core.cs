@@ -4,7 +4,7 @@ using S1API.Money;
 using S1APITemplate.Utils;
 using S1APITemplate.UI;
 using UnityEngine;
-using S1APITemplate.Finance;
+using S1APITemplate.Earnings;
 
 [assembly: MelonInfo(typeof(S1APITemplate.Core), Constants.ModName, Constants.ModVersion, Constants.ModAuthor)]
 [assembly: MelonGame(Constants.Game.Studio, Constants.Game.Name)]
@@ -17,10 +17,10 @@ namespace S1APITemplate
 
         private static MelonPreferences_Category? _preferencesCategory;
         private static MelonPreferences_Entry<bool>? _debugLogsEntry;
-        private static MelonPreferences_Entry<bool>? _financeLogsEntry;
+        private static MelonPreferences_Entry<bool>? _earningsLogsEntry;
         private NetWorthHud? _netWorthHud;
         private float _nextRefreshTime;
-        private readonly SessionFinanceTracker _sessionFinance = new SessionFinanceTracker();
+        private readonly SessionEarningsTracker _sessionEarnings = new SessionEarningsTracker();
         private bool _transactionHooksReady;
 
         public static bool DebugLogsEnabled => _debugLogsEntry?.Value ?? Constants.Defaults.DebugLogsEnabled;
@@ -29,10 +29,10 @@ namespace S1APITemplate
         {
             Instance = this;
             InitializePreferences();
-            FinanceDiagnostics.Configure(message => LoggerInstance.Msg(message), () => _financeLogsEntry?.Value == true);
+            EarningsDiagnostics.Configure(message => LoggerInstance.Msg(message), () => _earningsLogsEntry?.Value == true);
             try
             {
-                TransactionHooks.Install(_sessionFinance);
+                TransactionHooks.Install(_sessionEarnings);
                 _transactionHooksReady = true;
             }
             catch (System.Exception exception)
@@ -62,58 +62,59 @@ namespace S1APITemplate
             RemoveHud();
         }
 
-        private void OnLoadComplete()
-        {
+        /**
+         * Called when a save game is loaded successfully.
+         */
+        private void OnLoadComplete() {
             RemoveHud();
-            try
-            {
+            try {
                 _netWorthHud = new NetWorthHud();
                 _netWorthHud.Show();
-                if (_transactionHooksReady) _sessionFinance.Start();
-                FinanceDiagnostics.BeginSession();
+                if (_transactionHooksReady) _sessionEarnings.Start();
+                EarningsDiagnostics.BeginSession();
                 RefreshNetWorth();
-            }
-            catch (System.Exception exception)
-            {
+            } catch (System.Exception exception) {
                 RemoveHud();
                 LoggerInstance.Error($"Could not create net-worth HUD: {exception}");
             }
         }
 
-        /// <summary>Polls on Unity's main thread, only while a loaded save owns a HUD.</summary>
-        public override void OnUpdate()
-        {
+        /**
+         * <summary>Polls on Unity's main thread, only while a loaded save owns a HUD.</summary>
+         */
+        public override void OnUpdate() {
             if (_netWorthHud == null || Time.unscaledTime < _nextRefreshTime)
                 return;
 
-            try
-            {
+            try {
                 RefreshNetWorth();
-            }
-            catch (System.Exception exception)
-            {
+            } catch (System.Exception exception) {
                 // Stop after a failure instead of flooding the log every frame.
                 RemoveHud();
                 LoggerInstance.Error($"Could not refresh net-worth HUD: {exception}");
             }
         }
 
-        private void RefreshNetWorth()
-        {
+        /**
+         * Refreshes the Net Worth HUD keeping the info current and up-to-date.
+         */
+        private void RefreshNetWorth() {
             // Observe the exact same game result displayed on the HUD; do not invoke
             // GetNetWorth again for logging because its calculation runs game callbacks.
             float worth = Money.GetNetWorth();
-            FinanceDiagnostics.Observe(worth, Money.GetCashBalance(), Money.GetOnlineBalance(), _sessionFinance);
-            _netWorthHud?.SetValue(worth, _sessionFinance.Revenue,
-                _sessionFinance.Expenses, _sessionFinance.Profit, _transactionHooksReady);
+            EarningsDiagnostics.Observe(worth, Money.GetCashBalance(), Money.GetOnlineBalance(), _sessionEarnings);
+            _netWorthHud?.SetValue(worth, _sessionEarnings.Revenue, _sessionEarnings.Expenses,
+                _sessionEarnings.Profit, _transactionHooksReady);
             _nextRefreshTime = Time.unscaledTime + Constants.Defaults.HudRefreshSeconds;
         }
 
-        private void RemoveHud()
-        {
-            if (_sessionFinance.IsActive)
-                FinanceDiagnostics.Write($"SESSION STOP revenue={_sessionFinance.Revenue:F2} expenses={_sessionFinance.Expenses:F2} profit={_sessionFinance.Profit:F2}");
-            _sessionFinance.Stop();
+        /**
+         * Stops and disposes of the Net Worth HUD.
+         */
+        private void RemoveHud() {
+            if (_sessionEarnings.IsActive)
+                EarningsDiagnostics.Write($"SESSION STOP revenue={_sessionEarnings.Revenue:F2} expenses={_sessionEarnings.Expenses:F2} profit={_sessionEarnings.Profit:F2}");
+            _sessionEarnings.Stop();
             _netWorthHud?.Dispose();
             _netWorthHud = null;
             _nextRefreshTime = 0f;
@@ -127,8 +128,9 @@ namespace S1APITemplate
                 Constants.Defaults.DebugLogsEnabled,
                 "Enable Debug Logs",
                 "Show detailed debug messages in the MelonLoader console.");
-            _financeLogsEntry = _preferencesCategory.CreateEntry(
-                "FinanceDiagnostics", true, "Log Finance Diagnostics",
+            // Preserve the saved key so existing diagnostic preferences still apply.
+            _earningsLogsEntry = _preferencesCategory.CreateEntry(
+                "FinanceDiagnostics", true, "Log Earnings Diagnostics",
                 "Log transactions, exclusions, and changed net-worth snapshots to MelonLoader Latest.log.");
             _preferencesCategory.SaveToFile(false);
         }

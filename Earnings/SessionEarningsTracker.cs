@@ -1,9 +1,9 @@
 using System;
 
-namespace S1APITemplate.Finance
+namespace S1APITemplate.Earnings
 {
     /// <summary>Session-only cash-flow totals. Transfers never enter either total.</summary>
-    internal sealed class SessionFinanceTracker
+    internal sealed class SessionEarningsTracker
     {
         public bool IsActive { get; private set; }
         public decimal Revenue { get; private set; }

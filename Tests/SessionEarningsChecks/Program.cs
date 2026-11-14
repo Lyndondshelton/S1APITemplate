@@ -1,7 +1,7 @@
 using System;
-using S1APITemplate.Finance;
+using S1APITemplate.Earnings;
 using S1APITemplate.UI;
-var t = new SessionFinanceTracker();
+var t = new SessionEarningsTracker();
 // Receipts and spending must remain separate even inside one HUD update interval.
 void Check(bool ok, string name) { if(!ok) throw new Exception(name); Console.WriteLine("PASS: " + name); }
 t.Record(99); Check(t.Revenue == 0, "Loading/inactive money ignored");
@@ -32,15 +32,15 @@ catch (MissingMemberException) { missingTypeRejected = true; }
 Check(missingTypeRejected, "Missing game types fail explicitly");
 
 var diagnosticLines = new System.Collections.Generic.List<string>();
-FinanceDiagnostics.Configure(diagnosticLines.Add, () => true);
-FinanceDiagnostics.BeginSession();
-FinanceDiagnostics.Observe(2880f, 100f, 500f, t);
-FinanceDiagnostics.Observe(2880f, 100f, 500f, t);
+EarningsDiagnostics.Configure(diagnosticLines.Add, () => true);
+EarningsDiagnostics.BeginSession();
+EarningsDiagnostics.Observe(2880f, 100f, 500f, t);
+EarningsDiagnostics.Observe(2880f, 100f, 500f, t);
 Check(diagnosticLines.Count == 2, "Unchanged snapshots are not spammed");
-FinanceDiagnostics.Observe(3598f, 205f, 500f, t);
+EarningsDiagnostics.Observe(3598f, 205f, 500f, t);
 Check(diagnosticLines[2].Contains("netWorthDelta=718.00") && diagnosticLines[2].Contains("cashDelta=105.00") && diagnosticLines[2].Contains("otherReportedDelta=613.00"), "Diagnostics distinguish net-worth jumps from cash changes");
-FinanceDiagnostics.Configure(diagnosticLines.Add, () => false);
-FinanceDiagnostics.Observe(9999f, 0f, 0f, t);
+EarningsDiagnostics.Configure(diagnosticLines.Add, () => false);
+EarningsDiagnostics.Observe(9999f, 0f, 0f, t);
 Check(diagnosticLines.Count == 3, "Diagnostic preference disables output");
 
 namespace ScheduleOne { internal sealed class MonoLookupProbe { } internal sealed class SharedLookupProbe { } }

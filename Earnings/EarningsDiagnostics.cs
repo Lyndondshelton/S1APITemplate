@@ -2,10 +2,10 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace S1APITemplate.Finance
+namespace S1APITemplate.Earnings
 {
     /// <summary>Optional diagnostic observations only; never recalculates or modifies game money.</summary>
-    internal static class FinanceDiagnostics
+    internal static class EarningsDiagnostics
     {
         private static Action<string>? _log;
         private static Func<bool>? _enabled;
@@ -39,7 +39,7 @@ namespace S1APITemplate.Finance
             if (!Enabled) return;
             // Named culture data is unavailable in some IL2CPP hosts.
             string line = FormattableString.Invariant(message).Replace('\r', ' ').Replace('\n', ' ');
-            _log?.Invoke($"[Finance session={_session} event={++_event}] {line}");
+            _log?.Invoke($"[Earnings session={_session} event={++_event}] {line}");
         }
 
         /// <summary>Managed callers help identify sales/recycling. Native IL2CPP callers may be absent.</summary>
@@ -53,11 +53,11 @@ namespace S1APITemplate.Finance
             return callers == null || callers.Length == 0 ? "unavailable (native caller may not be exposed)" : string.Join(" <- ", callers);
         }
 
-        public static void Totals(SessionFinanceTracker tracker) =>
+        public static void Totals(SessionEarningsTracker tracker) =>
             Write($"TOTALS revenue={tracker.Revenue:F2} expenses={tracker.Expenses:F2} profit={tracker.Profit:F2}");
 
         /// <summary>Log the initial sample and changes only, not every one-second refresh.</summary>
-        public static void Observe(float worth, float cash, float bank, SessionFinanceTracker tracker)
+        public static void Observe(float worth, float cash, float bank, SessionEarningsTracker tracker)
         {
             if (!Enabled) return;
             string snapshot = FormattableString.Invariant($"netWorth={worth:F2} cash={cash:F2} bank={bank:F2} otherReportedValue={worth - cash - bank:F2} revenue={tracker.Revenue:F2} expenses={tracker.Expenses:F2} profit={tracker.Profit:F2}");

@@ -6,9 +6,9 @@
   </PropertyGroup>
   <!-- Exercise the actual accounting class without loading Unity or the game. -->
   <ItemGroup>
-    <Compile Include="../../Finance/SessionFinanceTracker.cs" Link="SessionFinanceTracker.cs" />
-    <Compile Include="../../Finance/GameTypeLookup.cs" Link="GameTypeLookup.cs" />
-    <Compile Include="../../Finance/FinanceDiagnostics.cs" Link="FinanceDiagnostics.cs" />
+    <Compile Include="../../Earnings/SessionEarningsTracker.cs" Link="SessionEarningsTracker.cs" />
+    <Compile Include="../../Earnings/GameTypeLookup.cs" Link="GameTypeLookup.cs" />
+    <Compile Include="../../Earnings/EarningsDiagnostics.cs" Link="EarningsDiagnostics.cs" />
     <Compile Include="../../UI/MoneyDisplayFormatter.cs" Link="MoneyDisplayFormatter.cs" />
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ using System.Reflection;
 using HarmonyLib;
 using S1API.Money;
 
-namespace S1APITemplate.Finance
+namespace S1APITemplate.Earnings
 {
     /// <summary>
     /// Runtime-resolved prefix/postfix hooks keep game types out of the shared DLL.
@@ -13,12 +13,12 @@ namespace S1APITemplate.Finance
     /// </summary>
     internal static class TransactionHooks
     {
-        private static readonly HarmonyLib.Harmony Patches = new HarmonyLib.Harmony("NetWorthGui.SessionFinance");
-        internal static SessionFinanceTracker? Tracker { get; private set; }
+        private static readonly HarmonyLib.Harmony Patches = new HarmonyLib.Harmony("NetWorthGui.SessionEarnings");
+        internal static SessionEarningsTracker? Tracker { get; private set; }
         [ThreadStatic] private static int _transferDepth;
         [ThreadStatic] private static int _storageExpenseDepth;
 
-        public static void Install(SessionFinanceTracker tracker)
+        public static void Install(SessionEarningsTracker tracker)
         {
             try
             {
@@ -82,9 +82,9 @@ namespace S1APITemplate.Finance
             if (float.IsNaN(__state)) return;
             float after = Money.GetCashBalance();
             bool excluded = _transferDepth > 0;
-            FinanceDiagnostics.Write($"CASH requested={__0:F2} before={__state:F2} after={after:F2} actualDelta={after - __state:F2} excluded={excluded} reason={(excluded ? "ATM/laundering scope" : "receipt/payment")} caller={FinanceDiagnostics.Caller()}");
+            EarningsDiagnostics.Write($"CASH requested={__0:F2} before={__state:F2} after={after:F2} actualDelta={after - __state:F2} excluded={excluded} reason={(excluded ? "ATM/laundering scope" : "receipt/payment")} caller={EarningsDiagnostics.Caller()}");
             if (!excluded) Tracker?.Record(after - __state);
-            if (Tracker != null) FinanceDiagnostics.Totals(Tracker);
+            if (Tracker != null) EarningsDiagnostics.Totals(Tracker);
         }
 
         private static void BankBefore(out float __state) =>
@@ -93,9 +93,9 @@ namespace S1APITemplate.Finance
         {
             if (float.IsNaN(__state)) return;
             float after = Money.GetOnlineBalance();
-            FinanceDiagnostics.Write($"BANK name='{__0}' unitAmount={__1:F2} quantity={__2:F2} requestedTotal={__1 * __2:F2} before={__state:F2} after={after:F2} actualDelta={after - __state:F2} excluded={SessionFinanceTracker.IsBankTransfer(__0)}");
+            EarningsDiagnostics.Write($"BANK name='{__0}' unitAmount={__1:F2} quantity={__2:F2} requestedTotal={__1 * __2:F2} before={__state:F2} after={after:F2} actualDelta={after - __state:F2} excluded={SessionEarningsTracker.IsBankTransfer(__0)}");
             Tracker?.RecordBank(__0, after - __state);
-            if (Tracker != null) FinanceDiagnostics.Totals(Tracker);
+            if (Tracker != null) EarningsDiagnostics.Totals(Tracker);
         }
 
         private static float StoredBalance(object instance) => Traverse.Create(instance).Property("Balance").GetValue<float>();
@@ -106,9 +106,9 @@ namespace S1APITemplate.Finance
             if (_storageExpenseDepth > 0 && _transferDepth == 0 && !float.IsNaN(__state))
             {
                 float after = StoredBalance(__instance);
-                FinanceDiagnostics.Write($"STORAGE_PAYMENT before={__state:F2} after={after:F2} actualDelta={after - __state:F2} caller={FinanceDiagnostics.Caller()}");
+                EarningsDiagnostics.Write($"STORAGE_PAYMENT before={__state:F2} after={after:F2} actualDelta={after - __state:F2} caller={EarningsDiagnostics.Caller()}");
                 Tracker?.Record(after - __state);
-                if (Tracker != null) FinanceDiagnostics.Totals(Tracker);
+                if (Tracker != null) EarningsDiagnostics.Totals(Tracker);
             }
         }
     }
