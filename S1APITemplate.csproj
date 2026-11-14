@@ -218,6 +218,22 @@
     </Reference>
   </ItemGroup>
 
+  <!-- Generate our own BuildInfo, separate from MelonLoader.BuildInfo.
+       Keep its namespace aligned with Constants.cs by using RootNamespace plus .Utils.
+       Generated code lives under obj; edit Version above instead of the generated file. -->
+  <Target Name="GenerateBuildInfo" BeforeTargets="BeforeCompile">
+    <PropertyGroup>
+      <BuildInfoFile>$(IntermediateOutputPath)BuildInfo.g.cs</BuildInfoFile>
+    </PropertyGroup>
+    <ItemGroup>
+      <_BuildInfoLines Include="// &lt;auto-generated /&gt;" />
+      <_BuildInfoLines Include="namespace $(RootNamespace).Utils { internal static class BuildInfo { public const string Version = &quot;$(Version)&quot;%3B public const string ModName = &quot;$(RootNamespace)&quot;%3B } }" />
+      <Compile Include="$(BuildInfoFile)" />
+      <FileWrites Include="$(BuildInfoFile)" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(BuildInfoFile)" Lines="@(_BuildInfoLines)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+
   <Target Name="ValidateLocalS1APIPath" BeforeTargets="ResolveReferences" Condition="'$(UseLocalS1APIForked)' == 'true'">
     <Error Condition="'$(LocalS1APIForkedPath)' == ''" Text="UseLocalS1APIForked is true, but LocalS1APIForkedPath is empty. Set it in local.build.props or turn UseLocalS1APIForked off." />
     <Error Condition="'$(LocalS1APIForkedPath)' != '' and !Exists('$(LocalS1APIForkedPath)')" Text="Local S1API was not found at '$(LocalS1APIForkedPath)'. Build S1API with configuration '$(LocalS1APIBuildConfiguration)', set LocalS1APIRoot/LocalS1APIForkedPath, or turn UseLocalS1APIForked off." />
