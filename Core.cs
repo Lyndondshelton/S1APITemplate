@@ -9,7 +9,7 @@ using S1APITemplate.Earnings;
 [assembly: MelonInfo(typeof(S1APITemplate.Core), Constants.ModName, Constants.ModVersion, Constants.ModAuthor)]
 [assembly: MelonGame(Constants.Game.Studio, Constants.Game.Name)]
 
-namespace S1APITemplate
+namespace S1API_NetWorthGUI
 {
     public sealed class Core : MelonMod
     {
