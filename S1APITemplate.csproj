@@ -8,7 +8,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>S1APITemplate</RootNamespace>
-    <Version>1.0.5</Version>
+    <Version>0.1.5</Version>
     <AssemblyName>S1API_NetWorthGUI_v$(Version)</AssemblyName>
     <LangVersion>latest</LangVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
