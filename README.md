@@ -110,7 +110,7 @@ dotnet build .\S1APITemplate.sln -c CrossCompat -p:AutomateLocalDeployment=false
 
 Use a recent .NET SDK (this machine also has one at
 `$env:USERPROFILE\.dotnet\dotnet.exe`). With the game closed, copy
-`bin/CrossCompat/netstandard2.1/S1APITemplate.dll` into the game's `Mods` folder.
+`bin/CrossCompat/netstandard2.1/S1API_NetWorthGUI_v1.0.5.dll` into the game's `Mods` folder.
 Remove any previous `S1APITemplate_Il2cpp.dll` from `Mods` when switching to this build,
 so MelonLoader does not load both versions. Launch the game normally, load a save,
 and check the panel, a money change, and returning to the menu/reloading a save.

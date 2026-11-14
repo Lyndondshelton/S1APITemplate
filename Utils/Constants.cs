@@ -3,9 +3,9 @@ namespace S1APITemplate.Utils
     public static class Constants
     {
         public const string ModName = "S1APITemplate";
-        public const string ModVersion = "1.0.0";
-        public const string ModAuthor = "YourName";
-        public const string ModDescription = "Mod description.";
+        public const string ModVersion = "1.0.5";
+        public const string ModAuthor = "Lyndon Shelton";
+        public const string ModDescription = "This mod adds a Net Worth HUD to the users screen for tracking total net worth and gameplay earnings.";
 
         public const string PreferencesCategory = ModName;
 

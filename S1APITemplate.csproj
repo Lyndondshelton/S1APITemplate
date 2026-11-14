@@ -8,6 +8,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>S1APITemplate</RootNamespace>
+    <Version>1.0.5</Version>
+    <AssemblyName>S1API_NetWorthGUI_v$(Version)</AssemblyName>
     <LangVersion>latest</LangVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <Configurations>CrossCompat;Mono;Il2cpp</Configurations>
@@ -41,17 +43,14 @@
 
   <PropertyGroup Condition="'$(Configuration)' == 'CrossCompat'">
     <DefineConstants>$(DefineConstants);CROSS_COMPAT;MONO</DefineConstants>
-    <AssemblyName>S1APITemplate</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Mono'">
     <DefineConstants>$(DefineConstants);MONO</DefineConstants>
-    <AssemblyName>S1APITemplate_Mono</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Il2cpp'">
     <DefineConstants>$(DefineConstants);IL2CPP</DefineConstants>
-    <AssemblyName>S1APITemplate_Il2cpp</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(UseLocalS1APIForked)' != 'true'">
