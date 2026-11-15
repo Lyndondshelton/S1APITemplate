@@ -5,3 +5,25 @@ obj/
 /.vs/
 .vs/
 local.build.props
+
+# macOS
+*.DS_Store
+
+#Rider
+/.idea/
+
+# Local settings
+*.props
+*.user
+
+# Local game assemblies used only as compile references; never distribute.
+/.local-references/
+
+# Agents
+/.agents/
+## Agent instructions
+AGENTS.md
+
+## Agent Logs
+./agent-logs/
+*agent.log
