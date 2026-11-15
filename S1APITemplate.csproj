@@ -1,6 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <Import Project="local.build.props" Condition="Exists('local.build.props')" />
 
+  <!-- Standalone calculator checks must not be compiled into the mod DLL. -->
+  <ItemGroup>
+    <Compile Remove="Tests/**" />
+    <None Remove="Tests/**" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFrameworks>netstandard2.1;net6.0</TargetFrameworks>
     <TargetFramework Condition="'$(Configuration)' != 'Il2cpp'">netstandard2.1</TargetFramework>
@@ -43,17 +49,16 @@
 
   <PropertyGroup Condition="'$(Configuration)' == 'CrossCompat'">
     <DefineConstants>$(DefineConstants);CROSS_COMPAT;MONO</DefineConstants>
-    <AssemblyName>S1APITemplate</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Mono'">
     <DefineConstants>$(DefineConstants);MONO</DefineConstants>
-    <AssemblyName>S1APITemplate_Mono</AssemblyName>
+    <AssemblyName>$(AssemblyName)_Mono</AssemblyName>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Il2cpp'">
     <DefineConstants>$(DefineConstants);IL2CPP</DefineConstants>
-    <AssemblyName>S1APITemplate_Il2cpp</AssemblyName>
+    <AssemblyName>$(AssemblyName)_Il2cpp</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(UseLocalS1APIForked)' != 'true'">
@@ -216,6 +221,10 @@
       <HintPath>$(MelonLoaderAssembliesPath)\Il2CppInterop.Runtime.dll</HintPath>
       <Private>false</Private>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="PhoneApps/Calculator/Assets/CalcAppLogo.png" LogicalName="CalculatorPhoneApp.CalcAppLogo.png" />
   </ItemGroup>
 
   <!-- Generate our own BuildInfo, separate from MelonLoader.BuildInfo.
