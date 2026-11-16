@@ -16,7 +16,7 @@
     <!-- Update the RootNamespace to be the name of the mod you're creating -->
     <RootNamespace>S1API_CalculatorPhoneApp</RootNamespace>
     <!-- Set the mod version here. GenerateBuildInfo also exposes it to Constants.ModVersion. -->
-    <Version>0.1.0</Version>
+    <Version>0.1.2</Version>
     
     <!-- Don't Change! This will be the name of the .dll file that is 
       created in /bin/<Configuration>/<Framework>/ when the project is built-->
@@ -182,6 +182,11 @@
   </ItemGroup>
 
   <ItemGroup Label="Il2CppGameReferences" Condition="'$(Configuration)' == 'Il2cpp' and '$(Il2CppAssembliesPath)' != ''">
+    <!-- Generated Unity wrappers require the IL2CPP core types for objects and delegates. -->
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>$(Il2CppAssembliesPath)\Il2Cppmscorlib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(Il2CppAssembliesPath)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>

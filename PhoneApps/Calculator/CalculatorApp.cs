@@ -1,8 +1,8 @@
 using S1API.PhoneApp;
 using S1API.Rendering;
 using S1API.UI;
+using S1API_CalculatorPhoneApp.Utils;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace S1API_CalculatorPhoneApp.PhoneApps.Calculator;
@@ -15,7 +15,7 @@ public class CalculatorApp : PhoneApp
     private Text? _status;
     private Sprite? _icon;
     private Texture2D? _iconTexture;
-    private bool _iconLoadAttempted;
+    private bool _iconLoadAttempted;    
 
     protected override string AppName => "S1API_CalculatorPhoneApp.Calculator";
     protected override string AppTitle => "Calculator";
@@ -80,11 +80,9 @@ public class CalculatorApp : PhoneApp
             label.fontSize = 24;
             label.color = Color.white;
             label.raycastTarget = false;
-            // Explicit UnityAction works with the Unity event API used by S1API.
-            button.onClick.AddListener(new UnityAction(() => Press(key)));
-            var navigation = button.navigation;
-            navigation.mode = Navigation.Mode.None;
-            button.navigation = navigation;
+            button.onClick.AddListener(UnityCallback.Create(() => Press(key)));
+            // Keep default navigation: direct Navigation access is incompatible with
+            // IL2CPP wrappers when this app is compiled against Mono for CrossCompat.
         }
     }
 
