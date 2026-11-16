@@ -1,6 +1,6 @@
 using System;
 
-namespace S1APITemplate.Earnings
+namespace S1API_NetWorthGUI.Earnings
 {
     /// <summary>Resolves exact game type names without enumerating unrelated Unity types.</summary>
     internal static class GameTypeLookup

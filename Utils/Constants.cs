@@ -4,7 +4,7 @@
  * --------------------------------------------------------
  */
 
-namespace S1APITemplate.Utils
+namespace S1API_NetWorthGUI.Utils
 {
     public static class Constants
     {
@@ -19,6 +19,9 @@ namespace S1APITemplate.Utils
         public static class Defaults
         {
             public const bool DebugLogsEnabled = false;
+
+            /// <summary>Refresh the HUD twice per second using Unity's unscaled time.</summary>
+            public const float HudRefreshSeconds = 0.5f;
         }
 
         public static class Constraints

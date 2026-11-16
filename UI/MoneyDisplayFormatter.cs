@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace S1APITemplate.UI
+namespace S1API_NetWorthGUI.UI
 {
     /// <summary>Formats HUD dollars without requiring installed culture data in the game host.</summary>
     internal static class MoneyDisplayFormatter

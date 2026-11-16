@@ -1,10 +1,10 @@
 using MelonLoader;
 using S1API.Lifecycle;
 using S1API.Money;
-using S1APITemplate.Utils;
-using S1APITemplate.UI;
+using S1API_NetWorthGUI.Utils;
+using S1API_NetWorthGUI.UI;
 using UnityEngine;
-using S1APITemplate.Earnings;
+using S1API_NetWorthGUI.Earnings;
 
 // Once you update the Core.cs namespace, you will have to update the typeof definition here. 
 [assembly: MelonInfo(typeof(S1API_NetWorthGUI.Core), Constants.ModName, Constants.ModVersion, Constants.ModAuthor)]

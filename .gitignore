@@ -26,6 +26,7 @@ AGENTS.md
 
 ## Agent Logs
 ./agent-logs/
+./game-logs/
 *agent.log
 *error.log
 *.log

@@ -1,6 +1,6 @@
 using System;
 
-namespace S1APITemplate.Earnings
+namespace S1API_NetWorthGUI.Earnings
 {
     /// <summary>Session-only cash-flow totals. Transfers never enter either total.</summary>
     internal sealed class SessionEarningsTracker

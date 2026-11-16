@@ -4,7 +4,7 @@ using System.Reflection;
 using HarmonyLib;
 using S1API.Money;
 
-namespace S1APITemplate.Earnings
+namespace S1API_NetWorthGUI.Earnings
 {
     /// <summary>
     /// Runtime-resolved prefix/postfix hooks keep game types out of the shared DLL.

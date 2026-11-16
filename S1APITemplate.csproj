@@ -19,7 +19,7 @@
     <RootNamespace>S1API_NetWorthGUI</RootNamespace>
     <!-- Project version and DLL filename. Update Version to change the version suffix in AssemblyName.
         MelonLoader reads its displayed mod version from Constants.ModVersion in the C# code. -->
-    <Version>0.1.5</Version>
+    <Version>0.1.6</Version>
     
     <AssemblyName>$(RootNamespace)_v$(Version)</AssemblyName>
     <!-- Use the installed compiler's latest supported C# syntax; declare English as the neutral resource language. -->

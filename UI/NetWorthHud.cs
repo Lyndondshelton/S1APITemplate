@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-namespace S1APITemplate.UI
+namespace S1API_NetWorthGUI.UI
 {
     /// <summary>Owns the screen UI only; Core supplies the game's net-worth value.</summary>
     internal sealed class NetWorthHud : IDisposable

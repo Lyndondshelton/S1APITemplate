@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 
-namespace S1APITemplate.Earnings
+namespace S1API_NetWorthGUI.Earnings
 {
     /// <summary>Optional diagnostic observations only; never recalculates or modifies game money.</summary>
     internal static class EarningsDiagnostics
