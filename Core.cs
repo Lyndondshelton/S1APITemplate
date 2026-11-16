@@ -6,9 +6,16 @@ using S1APITemplate.UI;
 using UnityEngine;
 using S1APITemplate.Finance;
 
+// Once you update the Core.cs namespace, you will have to update the typeof definition here. 
 [assembly: MelonInfo(typeof(S1APITemplate.Core), Constants.ModName, Constants.ModVersion, Constants.ModAuthor)]
 [assembly: MelonGame(Constants.Game.Studio, Constants.Game.Name)]
 
+/*
+ * ----------------------------------------------------
+ * Update the namespace to match what is defined in the
+ * S1APITemplate.csproj file.
+ * ----------------------------------------------------
+ */
 namespace S1APITemplate
 {
     public sealed class Core : MelonMod

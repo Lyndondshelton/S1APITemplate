@@ -1,9 +1,16 @@
+/*---------------------------------------------------------
+ * Update the namespace to match what is defined in Core.cs.
+ * The ModName should also match the namespace.
+ * --------------------------------------------------------
+ */
+
 namespace S1APITemplate.Utils
 {
     public static class Constants
     {
-        public const string ModName = "S1APITemplate";
-        public const string ModVersion = "1.0.0";
+        public const string ModName = BuildInfo.ModName;
+        // Generated from <Version> in the project file during each build.
+        public const string ModVersion = BuildInfo.Version;
         public const string ModAuthor = "YourName";
         public const string ModDescription = "Mod description.";
 
