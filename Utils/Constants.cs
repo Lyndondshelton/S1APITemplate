@@ -11,8 +11,8 @@ namespace S1APITemplate.Utils
         public const string ModName = BuildInfo.ModName;
         // Generated from <Version> in the project file during each build.
         public const string ModVersion = BuildInfo.Version;
-        public const string ModAuthor = "YourName";
-        public const string ModDescription = "Mod description.";
+        public const string ModAuthor = "Lyndon Shelton";
+        public const string ModDescription = "This mod adds a Net Worth HUD to the users screen for tracking total net worth and gameplay earnings.";
 
         public const string PreferencesCategory = ModName;
 

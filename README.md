@@ -7,9 +7,10 @@ The expanded panel also shows revenue, expenses, and profit since the save loade
 
 ## Session accounting
 
-### Finance diagnostics
+### Earnings diagnostics
 
-The `FinanceDiagnostics` MelonLoader preference defaults to `true`. Logs appear in
+The **Log Earnings Diagnostics** MelonLoader preference defaults to `true`.
+Its saved key remains `FinanceDiagnostics` for compatibility with existing settings. Logs appear in
 the MelonLoader console and the game's `MelonLoader/Latest.log`, tagged with a
 session number and event sequence. Set the preference to `false` to disable them.
 This is separate from the older `DebugLogs` preference.
@@ -44,7 +45,7 @@ net-worth calculation a second time. To investigate a sale, retain the surroundi
   Bank receipts arriving after the session starts belong to that session, except
   known transfers. The totals are not saved to disk.
 
-`Finance/SessionFinanceTracker.cs` owns accounting; `Finance/TransactionHooks.cs`
+`Earnings/SessionEarningsTracker.cs` owns accounting; `Earnings/TransactionHooks.cs`
 resolves game methods by runtime name and installs Harmony prefix/postfix hooks.
 It hooks the received bank transaction logic once, avoiding counting both the
 request and receipt. Transfer context is restored by finalizers even on exceptions.
@@ -62,13 +63,13 @@ this as a synchronized team ledger. Runtime testing on both backends remains req
 Run the standalone accounting checks with a .NET 9 SDK:
 
 ```powershell
-dotnet run --project Tests/SessionFinanceChecks
+dotnet run --project Tests/SessionEarningsChecks
 ```
 
 To reproduce IL2CPP host formatting restrictions, run:
 
 ```powershell
-dotnet run --project Tests/SessionFinanceChecks -p:InvariantGlobalization=true -- --invariant
+dotnet run --project Tests/SessionEarningsChecks -p:InvariantGlobalization=true -- --invariant
 ```
 
 HUD formatting uses invariant culture, so it does not require `en-US` culture data.
@@ -109,7 +110,7 @@ dotnet build .\S1APITemplate.sln -c CrossCompat -p:AutomateLocalDeployment=false
 
 Use a recent .NET SDK (this machine also has one at
 `$env:USERPROFILE\.dotnet\dotnet.exe`). With the game closed, copy
-`bin/CrossCompat/netstandard2.1/S1APITemplate.dll` into the game's `Mods` folder.
+`bin/CrossCompat/netstandard2.1/S1API_NetWorthGUI_v1.0.5.dll` into the game's `Mods` folder.
 Remove any previous `S1APITemplate_Il2cpp.dll` from `Mods` when switching to this build,
 so MelonLoader does not load both versions. Launch the game normally, load a save,
 and check the panel, a money change, and returning to the menu/reloading a save.
