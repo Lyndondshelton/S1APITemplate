@@ -20,7 +20,7 @@
     <!-- Project version and DLL filename. Update Version to change the version suffix in AssemblyName.
         MelonLoader reads its displayed mod version from Constants.ModVersion in the C# code. -->
     <Version>0.1.5</Version>
-    <VersionDescription>Prerelease implementation for dev use only.</VersionDescription>
+    
     <AssemblyName>$(RootNamespace)_v$(Version)</AssemblyName>
     <!-- Use the installed compiler's latest supported C# syntax; declare English as the neutral resource language. -->
     <LangVersion>latest</LangVersion>

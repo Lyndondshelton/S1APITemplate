@@ -7,7 +7,7 @@ using UnityEngine;
 using S1APITemplate.Earnings;
 
 // Once you update the Core.cs namespace, you will have to update the typeof definition here. 
-[assembly: MelonInfo(typeof(S1APITemplate.Core), Constants.ModName, Constants.ModVersion, Constants.ModAuthor)]
+[assembly: MelonInfo(typeof(S1API_NetWorthGUI.Core), Constants.ModName, Constants.ModVersion, Constants.ModAuthor)]
 [assembly: MelonGame(Constants.Game.Studio, Constants.Game.Name)]
 
 /*

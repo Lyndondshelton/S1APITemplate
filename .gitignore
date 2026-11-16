@@ -27,3 +27,5 @@ AGENTS.md
 ## Agent Logs
 ./agent-logs/
 *agent.log
+*error.log
+*.log
