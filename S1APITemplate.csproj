@@ -17,7 +17,6 @@
     <RootNamespace>S1API_CalculatorPhoneApp</RootNamespace>
     <!-- Set the mod version here. GenerateBuildInfo also exposes it to Constants.ModVersion. -->
     <Version>0.1.0</Version>
-    <VersionDescription>Prerelease implementation for dev use only.</VersionDescription>
     
     <!-- Don't Change! This will be the name of the .dll file that is 
       created in /bin/<Configuration>/<Framework>/ when the project is built-->
