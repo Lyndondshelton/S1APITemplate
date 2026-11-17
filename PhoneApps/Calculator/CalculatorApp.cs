@@ -43,20 +43,20 @@ public class CalculatorApp : PhoneApp
         _session.Press("C");
         var panel = UIFactory.Panel("Calculator", container.transform,
             new Color(0.07f, 0.09f, 0.12f), fullAnchor: true);
-        var title = UIFactory.Text("Title", "Calculator", panel.transform, 24,
+        var title = UIFactory.Text("Title", "Calculator", panel.transform, 36,
             TextAnchor.MiddleLeft, FontStyle.Bold);
         Place(title.rectTransform, 0.05f, 0.87f, 0.95f, 0.96f);
         title.color = Color.white;
         title.raycastTarget = false;
 
-        _display = UIFactory.Text("Display", "0", panel.transform, 30, TextAnchor.MiddleRight);
+        _display = UIFactory.Text("Display", "0", panel.transform, 48, TextAnchor.MiddleRight);
         Place(_display.rectTransform, 0.05f, 0.73f, 0.95f, 0.87f);
         _display.color = Color.white;
         _display.raycastTarget = false;
         _display.supportRichText = false;
         _display.resizeTextForBestFit = true;
-        _display.resizeTextMinSize = 12;
-        _display.resizeTextMaxSize = 30;
+        _display.resizeTextMinSize = 16;
+        _display.resizeTextMaxSize = 48;
         _status = UIFactory.Text("Status", "", panel.transform, 14, TextAnchor.MiddleRight);
         Place(_status.rectTransform, 0.05f, 0.64f, 0.95f, 0.73f);
         _status.color = new Color(1f, 0.65f, 0.45f);
@@ -77,7 +77,7 @@ public class CalculatorApp : PhoneApp
             Place(go.GetComponent<RectTransform>(), 0.05f + column * 0.23f,
                 0.05f + (4 - row) * 0.115f, 0.26f + column * 0.23f,
                 0.15f + (4 - row) * 0.115f);
-            label.fontSize = 24;
+            label.fontSize = 48;
             label.color = Color.white;
             label.raycastTarget = false;
             button.onClick.AddListener(UnityCallback.Create(() => Press(key)));

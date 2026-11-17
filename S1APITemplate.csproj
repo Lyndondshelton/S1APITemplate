@@ -16,7 +16,7 @@
     <!-- Update the RootNamespace to be the name of the mod you're creating -->
     <RootNamespace>S1API_CalculatorPhoneApp</RootNamespace>
     <!-- Set the mod version here. GenerateBuildInfo also exposes it to Constants.ModVersion. -->
-    <Version>0.1.2</Version>
+    <Version>0.1.5</Version>
     
     <!-- Don't Change! This will be the name of the .dll file that is 
       created in /bin/<Configuration>/<Framework>/ when the project is built-->
