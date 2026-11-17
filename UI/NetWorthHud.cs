@@ -16,6 +16,12 @@ namespace S1API_NetWorthGUI.UI
         private Text? _expensesText;
         private Text? _profitText;
         private string? _displayedValue;
+        
+        private const int H1 = 28;
+        private const int H2 = 18;
+        private const int H3 = 14;
+        private const int H4 = 12;
+        private const int TXT = 11;
 
         /// <summary>Creates one non-interactive, resolution-scaled overlay after a save loads.</summary>
         public void Show()
@@ -40,24 +46,35 @@ namespace S1API_NetWorthGUI.UI
                 new Color(0.06f, 0.08f, 0.10f, 0.82f), new Vector2(0f, 1f), new Vector2(0f, 1f));
             var rect = panel.GetComponent<RectTransform>();
             rect.pivot = new Vector2(0f, 1f);
-            rect.anchoredPosition = new Vector2(20f, -20f);
-            rect.sizeDelta = new Vector2(340f, 222f);
+            // Changed from  20f, -20f to 50f,-50f
+            // -50f is too low
+            const float xAnchor = 50f;
+            const float yAnchor = -12f;
+            const float setWidth = 325f;
+            const float setHeight = 198f;
+            rect.anchoredPosition = new Vector2(xAnchor, yAnchor);
+            //Changed from 340f, 222f to 320f, 200f
+            rect.sizeDelta = new Vector2(setWidth, setHeight);
             panel.GetComponent<Image>().raycastTarget = false;
 
-            var title = UIFactory.Text("Title", "NET WORTH", panel.transform, 14,
+            //panel.transform sets the parent element to be the NetWorthPanel
+            
+            var title = UIFactory.Text("Title", "NET WORTH", panel.transform, H3,
                 TextAnchor.UpperLeft, FontStyle.Bold);
-            PlaceText(title, 14f, -12f, 312f, 22f);
+            PlaceText(title, 14f, (yAnchor-2f), 312f, 22f); // y-bottom: -34f from origin
             title.color = new Color(0.75f, 0.8f, 0.85f, 1f);
-
-            _valueText = UIFactory.Text("Value", "--", panel.transform, 28,
+            
+            _valueText = UIFactory.Text("Value", "--", panel.transform, H1,
                 TextAnchor.UpperLeft, FontStyle.Bold);
-            PlaceText(_valueText, 14f, -35f, 312f, 40f);
-            var sessionTitle = UIFactory.Text("SessionTitle", "SINCE SAVE LOADED", panel.transform, 12);
-            PlaceText(sessionTitle, 14f, -87f, 312f, 20f);
+            PlaceText(_valueText, 14f, (yAnchor-15f), 312f, 40f); // y-bottom: -75f from origin
+            
+            var sessionTitle = UIFactory.Text("SessionTitle", "SINCE SAVE LOADED", panel.transform, H4);
+            PlaceText(sessionTitle, 14f, (yAnchor-68f), 312f, 20f); // y-bottom: -98f from origin
             sessionTitle.color = title.color;
-            _revenueText = CreateRow(panel.transform, "Revenue", -115f);
-            _expensesText = CreateRow(panel.transform, "Expenses", -147f);
-            _profitText = CreateRow(panel.transform, "Profit", -179f);
+            
+            _revenueText = CreateRow(panel.transform, "Revenue", yAnchor-90f); //y-bottom: -128f from origin
+            _expensesText = CreateRow(panel.transform, "Expenses", yAnchor-122f); // y-bottom: -160
+            _profitText = CreateRow(panel.transform, "Profit", yAnchor-154f); // y-bottom: -192 (setHeight: 200f, leaves 8 units)
             // No GraphicRaycaster or input handlers: this display cannot capture clicks.
         }
 
@@ -95,10 +112,11 @@ namespace S1API_NetWorthGUI.UI
 
         private static Text CreateRow(Transform parent, string label, float y)
         {
-            var caption = UIFactory.Text(label + "Label", label, parent, 18);
+            var caption = UIFactory.Text(label + "Label", label, parent, H2);
             PlaceText(caption, 14f, y, 110f, 28f);
-            var value = UIFactory.Text(label + "Value", "--", parent, 18, TextAnchor.UpperRight);
-            PlaceText(value, 124f, y, 202f, 28f);
+            var value = UIFactory.Text(label + "Value", "--", parent, H2, TextAnchor.UpperRight);
+            //Changed from x:124f to x:112f
+            PlaceText(value, 112f, y, 202f, 28f);
             return value;
         }
 
